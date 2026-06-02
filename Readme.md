@@ -27,5 +27,13 @@ cmake --build . --target run
 ```
 Same as building the ISO, it depends on the ISO target. Then it will run it via QEMU.
 
+### Building the ISO on Windows:
+```bat
+./build.bat
+```
+Running this requires you to have Docker installed, that's it.
+
+It will first build the minimal iso builder, then it will execute the required build steps using the current dir as its volume.
+
 ## License
 This project is protected under a reference-only license. Please refer to the [License.md](License.md) file for more information.
