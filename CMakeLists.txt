@@ -16,7 +16,7 @@ set(KERNEL_C_FLAGS
     -mno-mmx -mno-sse -mno-sse2   # No FPU/SIMD in kernel
     -mcmodel=kernel
     -Wall -Wextra
-    -O2
+    -O3
 )
 
 set(KERNEL_LINK_FLAGS

@@ -34,19 +34,15 @@ void kernel_main(mb2_info_t* mb2_info, const uint32_t mb2_magic) {
 	paging_init(mb2_info);
 	kalloc_init((void*)ld_heap_start, (uint64_t)(ld_heap_end - ld_heap_start));
 
-	// Parse mb2 first so fb_init gets called
 	if (mb2_magic != 0x36D76289) {
-		// Can't log yet, write to serial at least
 		kpanic("Invalid Multiboot2 magic");
 		return;
 	}
 
-	mb2_parse(mb2_info);   // fb_init happens in here
-	console_init();        // font renderer on top of framebuffer
-	print_clear();         // now safe to use
+	mb2_parse(mb2_info);
+	console_init();
+	print_clear();
 
-
-	// Now we can log
 	klog(LOG_INFO, "Neko OS Booting...");
 	klog(LOG_INFO, "Kernel: 0x%x - 0x%x (%u bytes)",
 		(uint64_t)ld_kernel_start,

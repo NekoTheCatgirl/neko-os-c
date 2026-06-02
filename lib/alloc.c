@@ -1,6 +1,7 @@
 #include "alloc.h"
-#include "mem.h"
+
 #include "klogf.h"
+#include "mem.h"
 #include "panic.h"
 
 #define HEAP_MAGIC 0xF00DF00D

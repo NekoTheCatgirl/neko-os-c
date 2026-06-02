@@ -1,4 +1,6 @@
 cmake-build-*/
 .idea/
 
+build/
+
 assets/logo.raw
