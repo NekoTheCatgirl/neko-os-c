@@ -15,7 +15,7 @@ SECTIONS
     .heap BLOCK(4K) : ALIGN(4K)
     {
         ld_heap_start = .;
-        . += 64M;
+        . += 16M;
         ld_heap_end = .;
     }
 
