@@ -3,7 +3,7 @@
 #include "klogf.h"
 #include "panic.h"
 
-#define HEAP_MAGIC 0xDEADC0DE
+#define HEAP_MAGIC 0xF00DF00D
 
 typedef struct heap_block {
 	uint32_t magic;
@@ -12,7 +12,7 @@ typedef struct heap_block {
 	bool free;
 } heap_block_t;
 
-static heap_block_t* g_heap_start = NULL;
+static heap_block_t* g_heap_start = nullptr;
 static size_t g_heap_total_size = 0;
 
 void kalloc_init(void* start, size_t size) {
@@ -25,14 +25,14 @@ void kalloc_init(void* start, size_t size) {
 
 	g_heap_start->magic = HEAP_MAGIC;
 	g_heap_start->size = size - sizeof(heap_block_t);
-	g_heap_start->next = NULL;
+	g_heap_start->next = nullptr;
 	g_heap_start->free = true;
 
 	klog(LOG_INFO, "Heap initialized at %p, size %u bytes", start, size);
 }
 
 void* kmalloc(size_t size) {
-	if (size == 0) return NULL;
+	if (size == 0) return nullptr;
 
 	// Align size to 8 bytes
 	size = (size + 7) & ~7;
