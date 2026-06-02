@@ -12,7 +12,6 @@
 #include "klogf.h"
 #include "paging.h"
 #include "panic.h"
-#include "printf.h"
 #include "serial.h"
 #include "x86.h"
 #include "alloc.h"
@@ -41,7 +40,6 @@ void kernel_main(mb2_info_t* mb2_info, const uint32_t mb2_magic) {
 
 	mb2_parse(mb2_info);
 	console_init();
-	print_clear();
 
 	klog(LOG_INFO, "Neko OS Booting...");
 	klog(LOG_INFO, "Kernel: 0x%x - 0x%x (%u bytes)",
@@ -51,9 +49,13 @@ void kernel_main(mb2_info_t* mb2_info, const uint32_t mb2_magic) {
 
 	pic_disable();
 	acpi_init(mb2_info);
-	klog(LOG_INFO, "UwU");
 
 	lapic_init();
 
 	fb_draw_cpu_logos(madt_get_cpu_count());
+	klog(LOG_INFO, "UwU");
+
+	while (1) {
+		__asm__ __volatile__("hlt");
+	}
 }

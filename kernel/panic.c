@@ -10,7 +10,10 @@ void kpanic(const char* fmt, ...) {
 
 	va_end(args);
 
-	__asm__ volatile("cli; hlt");
+	__asm__ volatile(
+		"cli\n"
+		"hlt"
+	);
 
 	__builtin_unreachable();
 }

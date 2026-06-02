@@ -9,13 +9,11 @@ add_library(drivers_asm_objs OBJECT
 add_library(drivers_objs OBJECT
             framebuffer.c
             acpi.c
-            panic.c
             idt.c
             paging.c
             gdt.c
             serial.c
             font.c
-            console.c
             pic.c
             lapic.c
             ioapic.c
