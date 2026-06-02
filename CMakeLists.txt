@@ -39,10 +39,10 @@ add_executable(neko_os.elf
                $<TARGET_OBJECTS:drivers_asm_objs>
                $<TARGET_OBJECTS:kernel_objs>
                ${CMAKE_BINARY_DIR}/logo.o
+               ${CMAKE_BINARY_DIR}/font.o
 )
 
 set_target_properties(neko_os.elf PROPERTIES
-                      DEPENDS ${CMAKE_BINARY_DIR}/font.o
                       LINK_DEPENDS ${CMAKE_SOURCE_DIR}/linker.ld
 )
 
@@ -51,9 +51,7 @@ target_link_options(neko_os.elf PRIVATE
                     -T ${CMAKE_SOURCE_DIR}/linker.ld
 )
 
-add_dependencies(neko_os.elf generate_logo)
-
-target_link_libraries(neko_os.elf PRIVATE ${CMAKE_BINARY_DIR}/font.o)
+add_dependencies(neko_os.elf generate_logo generate_font)
 
 add_custom_command(TARGET neko_os.elf POST_BUILD
                    COMMAND x86_64-elf-objcopy -O binary neko_os.elf neko_os.bin
