@@ -109,9 +109,9 @@ void smp_init() {
 		hpet_sleep_ms(1);
 
 		// Wait for this AP to check in before starting the next one
-		uint64_t timeout = 5;  // 5-second timeout
+		uint64_t timeout = 5000;  // 5-second timeout
 		while (aps_started < expected) {
-			hpet_sleep_ms(1000);
+			hpet_sleep_ms(1);
 			if (--timeout == 0) {
 				klog(LOG_WARN, "AP cpu=%d timed out", cpu);
 				break;

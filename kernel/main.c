@@ -54,8 +54,6 @@ void kernel_main(mb2_info_t* mb2_info, const uint32_t mb2_magic) {
 
 	lapic_init();
 	hpet_init();
-	fb_draw_cpu_logos(madt_get_cpu_count());
-	hpet_sleep_ms(1000);
 
 	x86_disable_interrupts();
 	smp_init();
