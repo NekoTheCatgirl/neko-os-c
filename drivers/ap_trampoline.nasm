@@ -15,7 +15,6 @@ global trampoline_entry
 trampoline_start:
     cli
     cld
-    mov dword [0x7000], 0x11
 
     xor ax, ax
     mov ds, ax
@@ -33,7 +32,6 @@ trampoline_pm_jmp:
 
 bits 32
 trampoline_pm:
-    mov dword [0x7000], 0x22
     mov ax, 0x10
     mov ds, ax
     mov es, ax
@@ -60,7 +58,6 @@ trampoline_pm:
 
 bits 64
 trampoline_lm:
-    mov dword [0x7000], 0x33
     mov ax, 0
     mov ss, ax
     mov ds, ax
@@ -70,7 +67,6 @@ trampoline_lm:
 
     mov rsp, [trampoline_stack - trampoline_start + 0x8000]
     mov rax, [trampoline_entry - trampoline_start + 0x8000]
-    mov dword [0x7000], 0x44
     call rax
 
 .hang:
