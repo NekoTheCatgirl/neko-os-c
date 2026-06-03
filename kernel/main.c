@@ -1,6 +1,8 @@
 #include <console.h>
+#include <hpet.h>
 #include <lapic.h>
 #include <pic.h>
+#include <smp.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -51,8 +53,14 @@ void kernel_main(mb2_info_t* mb2_info, const uint32_t mb2_magic) {
 	acpi_init(mb2_info);
 
 	lapic_init();
-
+	hpet_init();
 	fb_draw_cpu_logos(madt_get_cpu_count());
+	hpet_sleep_ms(1000);
+
+	x86_disable_interrupts();
+	smp_init();
+	x86_enable_interrupts();
+
 	klog(LOG_INFO, "UwU");
 
 	while (1) {

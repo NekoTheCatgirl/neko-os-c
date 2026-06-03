@@ -1,11 +1,14 @@
 #include "klogf.h"
 
-#include <framebuffer.h>
 #include <stdarg.h>
 
 #include "console.h"
+#include "framebuffer.h"
 #include "serial.h"
+#include "spinlock.h"
 #include "sprintf.h"
+
+static spinlock_t klog_lock = SPINLOCK_INIT;
 
 void kvlog(log_level_t level, const char* fmt, va_list args) {
 	switch (level) {
@@ -60,8 +63,10 @@ void kvlog(log_level_t level, const char* fmt, va_list args) {
 }
 
 void klog(log_level_t level, const char* fmt, ...) {
+    spinlock_acquire(&klog_lock);
 	va_list args;
 	va_start(args, fmt);
 	kvlog(level, fmt, args);
 	va_end(args);
+    spinlock_release(&klog_lock);
 }

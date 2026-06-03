@@ -4,6 +4,8 @@ SECTIONS
 {
     . = 1M;
 
+    trampoline_load_addr = 0x8000;
+
     ld_kernel_start = .;
 
     .text ALIGN(4K) :

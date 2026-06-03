@@ -3,7 +3,8 @@ enable_language(ASM_NASM)
 set(CMAKE_ASM_NASM_OBJECT_FORMAT elf64)
 
 add_library(drivers_asm_objs OBJECT
-            idt.asm
+            idt.nasm
+            ap_trampoline.nasm
 )
 
 add_library(drivers_objs OBJECT
@@ -17,6 +18,9 @@ add_library(drivers_objs OBJECT
             pic.c
             lapic.c
             ioapic.c
+            hpet.c
+            madt.c
+            smp.c
 )
 
 target_include_directories(drivers_objs PUBLIC ${CMAKE_SOURCE_DIR}/include)

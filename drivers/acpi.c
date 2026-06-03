@@ -1,10 +1,13 @@
 #include "acpi.h"
 
+#include <hpet.h>
 #include <madt.h>
 
 #include "klogf.h"
 #include "mem.h"
 #include "panic.h"
+
+// Forward declare the functions
 
 void acpi_parse_rsdt(rsdt_t* rsdt);
 void acpi_parse_xsdt(xsdt_t* xsdt);
@@ -61,6 +64,10 @@ void acpi_parse_tables(acpi_sdt_header_t* header, int entry_size) {
 		if (memcmp(table->signature, "APIC", 4) == 0) {
 			klog(LOG_INFO, "Starting to parse APIC table");
 			madt_parse((madt_t*)table);
+		}
+		if (memcmp(table->signature, "HPET", 4) == 0) {
+			klog(LOG_INFO, "Starting to parse HPET table");
+			hpet_parse((hpet_t*)table);
 		}
 	}
 }

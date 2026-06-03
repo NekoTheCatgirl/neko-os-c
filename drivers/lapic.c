@@ -7,11 +7,11 @@
 
 static uint64_t lapic_base = 0;
 
-static uint32_t lapic_read(const uint32_t reg) {
+uint32_t lapic_read(const uint32_t reg) {
 	return *(volatile uint32_t*)(lapic_base + reg);
 }
 
-static void lapic_write(uint32_t reg, uint32_t val)  {
+void lapic_write(const uint32_t reg, const uint32_t val)  {
 	*(volatile uint32_t*)(lapic_base + reg) = val;
 }
 
@@ -32,14 +32,30 @@ void lapic_init() {
 
 	// Configure timer
 	lapic_write(LAPIC_TIMER_DIV, 0x3);
-	lapic_write(LAPIC_TIMER, 0x20 | LVT_TIMER_PERIODIC | LVT_MASK);
+	lapic_write(LAPIC_TIMER, 0x20 | LVT_TIMER_PERIODIC);
 	lapic_write(LAPIC_TIMER_INIT, 0x100000);
 
 	// Enable timer
 	auto const timer = lapic_read(LAPIC_TIMER);
-	lapic_write(LAPIC_TIMER, timer | LVT_MASK);
+	lapic_write(LAPIC_TIMER, timer);
 
 	klog(LOG_INFO, "LAPIC id=%d version=0x%x", lapic_read(LAPIC_ID) >> 24, lapic_read(LAPIC_VERSION) & 0xFF);
+}
+
+void lapic_send_ipi(const uint8_t apic_id, const uint32_t flags) {
+	// Write destination first (high), then command (low) which triggers sending
+	lapic_write(LAPIC_ICR_HIGH, (uint32_t)apic_id << 24);
+	lapic_write(LAPIC_ICR_LOW, flags);
+
+	// Spin until delivery status bit clears
+	while (lapic_read(LAPIC_ICR_LOW) & (1 << 12))
+		__asm__ volatile("pause");
+}
+
+void lapic_sleep_ms(uint32_t ms) {
+	for (uint32_t i = 0; i < ms; i++)
+		for (volatile uint32_t j = 0; j < 100000; j++)
+			__asm__ volatile("pause");
 }
 
 void lapic_eoi() {

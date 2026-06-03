@@ -43,9 +43,11 @@ extern void isr0(), isr1(), isr2(), isr3(), isr4(), isr5(),
 			isr24(), isr25(), isr26(), isr27(), isr28(), isr29(),
 			isr30(), isr31();
 
+static volatile uint64_t timer_count = 0;
+
 void timer_handler() {
-	klog(LOG_INFO, "Timer Interrupt");
 	lapic_eoi();
+	klog(LOG_INFO, "Timer tick %i", timer_count++);
 }
 
 void spurious_handler() {

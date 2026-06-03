@@ -97,7 +97,6 @@ extern timer_handler
 global isr_timer
 
 isr_timer:
-    ; save all general purpose registers
     push rax
     push rbx
     push rcx
@@ -116,7 +115,6 @@ isr_timer:
 
     call timer_handler
 
-    ; restore registers
     pop r15
     pop r14
     pop r13
@@ -133,14 +131,12 @@ isr_timer:
     pop rbx
     pop rax
 
-    add rsp, 16     ; pop vector and error code
-    iretq
+    iretq          ; no add rsp, 16 here
 
 extern spurious_handler
 global isr_spurious
 
 isr_spurious:
-    ; save all general purpose registers
     push rax
     push rbx
     push rcx
@@ -157,9 +153,8 @@ isr_spurious:
     push r14
     push r15
 
-    call timer_handler
+    call spurious_handler   ; also fix: you were calling timer_handler here!
 
-    ; restore registers
     pop r15
     pop r14
     pop r13
@@ -176,5 +171,4 @@ isr_spurious:
     pop rbx
     pop rax
 
-    add rsp, 16     ; pop vector and error code
-    iretq
+    iretq          ; no add rsp, 16

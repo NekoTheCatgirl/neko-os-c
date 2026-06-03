@@ -2,9 +2,7 @@ add_library(lib_objs OBJECT
             string.c
             sprintf.c
             klogf.c
-            hpet.c
             alloc.c
-            madt.c
             console.c
 )
 

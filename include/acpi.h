@@ -18,6 +18,14 @@ typedef struct {
 } PACKED acpi_sdt_header_t;
 
 typedef struct {
+	uint8_t address_space_id;
+	uint8_t register_bit_width;
+	uint8_t register_bit_offset;
+	uint8_t reserved;
+	uint64_t address;
+} PACKED acpi_address_t;
+
+typedef struct {
 	acpi_sdt_header_t header;
 	uint32_t tables[];
 } PACKED rsdt_t;

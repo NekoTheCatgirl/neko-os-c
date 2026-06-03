@@ -3,8 +3,8 @@
 #include <stdint.h>
 
 void* memcpy(void* dest, const void* src, size_t n) {
-	const auto d = (uint8_t*)dest;
-	const auto s = (const uint8_t*)src;
+	auto d = (uint8_t*)dest;
+	auto s = (uint8_t*)src;
 	for (size_t i = 0; i < n; i++)
 		d[i] = s[i];
 	return dest;
