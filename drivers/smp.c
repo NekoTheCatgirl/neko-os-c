@@ -4,6 +4,7 @@
 #include <klogf.h>
 #include <lapic.h>
 #include <madt.h>
+#include <scheduler.h>
 
 #include "macros.h"
 #include "mem.h"
@@ -44,13 +45,10 @@ void ap_main() {
 
 	while (aps_started < aps_expected) __asm__ volatile("pause");
 
-	for (;;) __asm__ volatile("hlt");
+	cpu_enter_worker();
 }
 
 void smp_init() {
-	*(volatile uint8_t*)SMP_TRAMPOLINE_ADDR = 0xAA;
-	klog(LOG_INFO, "Test write: 0x%x", *(volatile uint8_t*)SMP_TRAMPOLINE_ADDR);
-
 	size_t size = trampoline_end - trampoline_start;
 	// Copy the trampoline to the correct memory address.
 	uint8_t* src = trampoline_start;

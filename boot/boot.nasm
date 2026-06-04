@@ -17,8 +17,8 @@ header_start:
         dw 5                      ; Type
         dw 1                      ; Flags (1=Optional)
         dd .fb_end - .fb_start    ; Size (Auto-calculated)
-        dd 0                      ; Width (0=Any)
-        dd 0                      ; Height (0=Any)
+        dd 480                    ; Width (0=Any)
+        dd 270                    ; Height (0=Any)
         dd 0                      ; Depth (0=Any)
     .fb_end:
 

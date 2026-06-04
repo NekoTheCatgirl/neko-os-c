@@ -5,6 +5,7 @@ set(CMAKE_ASM_NASM_OBJECT_FORMAT elf64)
 add_library(drivers_asm_objs OBJECT
             idt.nasm
             ap_trampoline.nasm
+            scheduler.nasm
 )
 
 add_library(drivers_objs OBJECT
@@ -21,6 +22,7 @@ add_library(drivers_objs OBJECT
             hpet.c
             madt.c
             smp.c
+            scheduler.c
 )
 
 target_include_directories(drivers_objs PUBLIC ${CMAKE_SOURCE_DIR}/include)

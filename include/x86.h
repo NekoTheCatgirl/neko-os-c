@@ -198,3 +198,12 @@ static inline void x86_wrmsr(uint32_t msr_id, uint64_t msr_value) {
 }
 #endif
 
+static inline uint64_t x86_read_cr3() {
+	uint64_t cr3;
+	__asm__ volatile ("mov %%cr3, %0" : "=r"(cr3));
+	return cr3;
+}
+
+static inline void x86_write_cr3(uint64_t cr3) {
+	__asm__ volatile ("mov %0, %%cr3" : : "r"(cr3) : "memory");
+}

@@ -1,6 +1,7 @@
 #include "idt.h"
 
 #include <lapic.h>
+#include <scheduler.h>
 
 #include "klogf.h"
 #include "panic.h"
@@ -32,8 +33,10 @@ static const char* exception_names[] = {
 };
 
 void exception_handler(uint64_t vector, uint64_t error_code) {
-	kpanic("Exception %u: %s (error code: 0x%x)",
-		vector, exception_names[vector], error_code);
+	uint64_t rip;
+	__asm__ volatile("mov 16(%%rbp), %0" : "=r"(rip));
+	kpanic("Exception %u: %s (error code: 0x%x) at rip=0x%x",
+		vector, exception_names[vector], error_code, rip);
 }
 
 extern void isr0(), isr1(), isr2(), isr3(), isr4(), isr5(),
@@ -47,7 +50,7 @@ static volatile uint64_t timer_count = 0;
 
 void timer_handler() {
 	lapic_eoi();
-	klog(LOG_INFO, "Timer tick %i", timer_count++);
+	scheduler_tick();
 }
 
 void spurious_handler() {
